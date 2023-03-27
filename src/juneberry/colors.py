@@ -28,7 +28,7 @@ from typing import Union
 from typing import Tuple
 
 
-__all__ = ('Colour', 'Color')
+__all__ = ('Mode', 'Colour', 'Color')
 
 # Type
 R = NewType('R', int)
