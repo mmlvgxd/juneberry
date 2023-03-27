@@ -1,0 +1,17 @@
+[tool.poetry]
+name = 'juneberry'
+version = '0.1.0'
+description = 'Lightweight Python logging without dependencies'
+authors = ['mmlvgx']
+license = 'MIT'
+readme = 'README.md'
+packages = [{include = 'juneberry', from = 'src'}]
+
+
+[tool.poetry.dependencies]
+python = '^3.10'
+
+
+[build-system]
+requires = ['poetry-core']
+build-backend = 'poetry.core.masonry.api'
