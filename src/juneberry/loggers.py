@@ -64,7 +64,7 @@ class Logger:
 
         now = timestamp.new()
 
-        frame = stack()[-1]
+        frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
@@ -87,7 +87,7 @@ class Logger:
 
         now = timestamp.new()
 
-        frame = stack()[-1]
+        frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
@@ -109,7 +109,7 @@ class Logger:
 
         now = timestamp.new()
 
-        frame = stack()[-1]
+        frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
@@ -131,7 +131,7 @@ class Logger:
 
         now = timestamp.new()
 
-        frame = stack()[-1]
+        frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
@@ -153,7 +153,7 @@ class Logger:
 
         now = timestamp.new()
 
-        frame = stack()[-1]
+        frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
