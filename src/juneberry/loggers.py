@@ -25,6 +25,8 @@ from inspect import stack
 from inspect import getmodule
 from inspect import getmodulename
 
+from enum import Enum
+
 from sys import stdout
 from .themes import default
 
@@ -34,6 +36,14 @@ from .timestamps import Timestamp
 from .colors import BOLD
 from .colors import RESET
 from .colors import ITALIC
+
+
+class Level(Enum):
+    INFO = 'info'
+    WARN = 'warn'
+    DEBUG = 'debug'
+    ERROR = 'error'
+    FATAL = 'fatal'
 
 
 class Logger:
@@ -50,6 +60,21 @@ class Logger:
         if self.theme is None:
             self.theme = default
 
+    def _log(self, message: str, level: Level, scope: tuple) -> None:
+        timestamp = Timestamp(self.theme.timestamp)
+
+        theme = self.theme.__getattribute__(level.value)
+
+        level = BOLD + theme + level.name + RESET
+        message = ITALIC + self.theme.message + message + RESET
+
+        now = timestamp.new()
+
+        module = scope[0]
+        name = scope[1]
+
+        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
+
     def info(self, message: str) -> None:
         '''
         Confirmation that things are working as expected
@@ -57,19 +82,12 @@ class Logger:
         Parameters:
             message (str): A message to info
         '''
-        timestamp = Timestamp(self.theme.timestamp)
-
-        message = ITALIC + self.theme.message + message + RESET
-        level = BOLD + self.theme.info + 'INFO' + RESET
-
-        now = timestamp.new()
-
         frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
+        self._log(message, Level.INFO, (module, name))
 
     def warn(self, message: str) -> None:
         '''
@@ -78,21 +96,14 @@ class Logger:
         The software is still working as expected.
 
         Parameters:
-            message (str): A message to info
+            message (str): A message to warn
         '''
-        timestamp = Timestamp(self.theme.timestamp)
-
-        message = ITALIC + self.theme.message + message + RESET
-        level = BOLD + self.theme.warn + 'WARN' + RESET
-
-        now = timestamp.new()
-
         frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
+        self._log(message, Level.WARN, (module, name))
 
     def debug(self, message: str) -> None:
         '''
@@ -100,21 +111,14 @@ class Logger:
         interest only when diagnosing problems
 
         Parameters:
-            message (str): A message to info
+            message (str): A message to debug
         '''
-        timestamp = Timestamp(self.theme.timestamp)
-
-        message = ITALIC + self.theme.message + message + RESET
-        level = BOLD + self.theme.debug + 'DEBUG' + RESET
-
-        now = timestamp.new()
-
         frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
+        self._log(message, Level.DEBUG, (module, name))
 
     def error(self, message: str) -> None:
         '''
@@ -122,21 +126,14 @@ class Logger:
         the software has not been able to perform some function.
 
         Parameters:
-            message (str): A message to info
+            message (str): A message to error
         '''
-        timestamp = Timestamp(self.theme.timestamp)
-
-        message = ITALIC + self.theme.message + message + RESET
-        level = BOLD + self.theme.error + 'ERROR' + RESET
-
-        now = timestamp.new()
-
         frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
+        self._log(message, Level.ERROR, (module, name))
 
     def fatal(self, message: str) -> None:
         '''
@@ -144,18 +141,11 @@ class Logger:
         itself may be unable to continue running.
 
         Parameters:
-            message (str): A message to info
+            message (str): A message to fatal
         '''
-        timestamp = Timestamp(self.theme.timestamp)
-
-        message = ITALIC + self.theme.message + message + RESET
-        level = BOLD + self.theme.fatal + 'FATAL' + RESET
-
-        now = timestamp.new()
-
         frame = stack()[1]
 
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
+        self._log(message, Level.FATAL, (module, name))
