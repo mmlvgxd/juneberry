@@ -1,20 +1,3 @@
-# juneberry
-Lightweight Python logging without dependencies
-# install
-`pip install juneberry`
-# examples
-`examples/basic.py`
-```py
-import juneberry
-
-
-logger = juneberry.Logger()
-
-logger.info('Hello')
-```
-You can also use themes\
-`examples/themes.py`
-```py
 from juneberry import Theme
 from juneberry import Color
 from juneberry import Logger
@@ -38,5 +21,3 @@ logger.warn('Warning')
 logger.debug('KrutoiSkeletik24')
 logger.error('Something went wrong')
 logger.fatal('Critical error')
-```
-![](assets/themes.png)
