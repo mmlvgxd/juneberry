@@ -69,7 +69,7 @@ class Logger:
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
+        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
 
     def warn(self, message: str) -> None:
         '''
@@ -92,7 +92,7 @@ class Logger:
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
+        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
 
     def debug(self, message: str) -> None:
         '''
@@ -114,7 +114,7 @@ class Logger:
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
+        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
 
     def error(self, message: str) -> None:
         '''
@@ -136,7 +136,7 @@ class Logger:
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
+        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
 
     def fatal(self, message: str) -> None:
         '''
@@ -158,4 +158,4 @@ class Logger:
         module = getmodule(frame[0])
         name = getmodulename(module.__file__)
 
-        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
+        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
