@@ -1,6 +1,6 @@
 [tool.poetry]
 name = 'juneberry'
-version = '1.0.0'
+version = '1.0.1'
 description = 'Lightweight Python logging without dependencies'
 authors = ['mmlvgx']
 license = 'MIT'

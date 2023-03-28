@@ -21,6 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 '''Juneberry loggers'''
+from inspect import stack
+from inspect import getmodule
+from inspect import getmodulename
+
 from sys import stdout
 from .themes import default
 
@@ -60,7 +64,12 @@ class Logger:
 
         now = timestamp.new()
 
-        stdout.write(f'{RESET}[{now} {level}] ({__name__}) {message}\n')
+        frame = stack()[-1]
+
+        module = getmodule(frame[0])
+        name = getmodulename(module.__file__)
+
+        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
 
     def warn(self, message: str) -> None:
         '''
@@ -78,7 +87,12 @@ class Logger:
 
         now = timestamp.new()
 
-        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')
+        frame = stack()[-1]
+
+        module = getmodule(frame[0])
+        name = getmodulename(module.__file__)
+
+        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
 
     def debug(self, message: str) -> None:
         '''
@@ -95,7 +109,12 @@ class Logger:
 
         now = timestamp.new()
 
-        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')
+        frame = stack()[-1]
+
+        module = getmodule(frame[0])
+        name = getmodulename(module.__file__)
+
+        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
 
     def error(self, message: str) -> None:
         '''
@@ -112,7 +131,12 @@ class Logger:
 
         now = timestamp.new()
 
-        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')
+        frame = stack()[-1]
+
+        module = getmodule(frame[0])
+        name = getmodulename(module.__file__)
+
+        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
 
     def fatal(self, message: str) -> None:
         '''
@@ -129,4 +153,9 @@ class Logger:
 
         now = timestamp.new()
 
-        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')
+        frame = stack()[-1]
+
+        module = getmodule(frame[0])
+        name = getmodulename(module.__file__)
+
+        stdout.write(f'{RESET}[{now} {level}] ({module}:<{name}>) {message}\n')
