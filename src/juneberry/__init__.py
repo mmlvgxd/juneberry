@@ -21,3 +21,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 '''Lightweight Python logging without dependencies'''
+from .loggers import *
+from .colors import *
+from .themes import *

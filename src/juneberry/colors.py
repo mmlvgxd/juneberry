@@ -21,14 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 '''Juneberry colors'''
-from dataclasses import dataclass
-
 from typing import NewType
-from typing import Union
 from typing import Tuple
 
 
-__all__ = ('Mode', 'Colour', 'Color')
+__all__ = ('Colour', 'Color')
 
 # Type
 R = NewType('R', int)
@@ -36,38 +33,36 @@ G = NewType('G', int)
 B = NewType('B', int)
 
 # ANSI
-ansi256 = '\x1b[{mode};2;{r};{g};{b}m'
+ansi256 = '\x1b[38;2;{r};{g};{b}m'
 
+BOLD = '\033[1m'
 RESET = '\033[0m'
-
-
-# Color mode
-class Mode:
-    '''Represents a Juneberry color mode'''
-
-    @dataclass
-    class Fore:
-        '''Foreground'''
-
-        value = 38
-
-    @dataclass
-    class Back:
-        '''Background'''
-
-        value = 48
+ITALIC = '\033[3m'
 
 
 # Color
 class Color:
-    '''Represents a Juneberry color'''
+    '''
+    Represents a Juneberry color
+
+    Attributes:
+        Custom (class): Custom Juneberry color
+        Default (class): Default Juneberry color
+    '''
 
     class Custom:
-        '''Custom Juneberry color'''
+        '''
+        Custom Juneberry color
+        '''
 
         @staticmethod
-        def from_rgb(rgb: Tuple[R, G, B], mode: Union[Mode.Fore, Mode.Back]) -> str:
-            '''Custom Juneberry color from RGB'''
+        def from_rgb(rgb: Tuple[R, G, B]) -> str:
+            '''
+            Custom Juneberry color from RGB
+
+            Parameters:
+                rgb (tuple[R, G, B]): RGB to use
+            '''
             for component in rgb:
                 if component > 255:
                     # RGB color component must not be more than 255
@@ -77,34 +72,21 @@ class Color:
             g = rgb[1]  # Green color component
             b = rgb[2]  # Blue color component
 
-            return ansi256.format(mode=mode.value, r=r, g=g, b=b)
+            return ansi256.format(r=r, g=g, b=b)
 
     class Default:
-        '''Default Juneberry color'''
+        '''
+        Default Juneberry color
+        '''
 
-        class Fore:
-            '''Default foreground Juneberry color'''
+        WHITE = ansi256.format(r=255, g=255, b=255)
+        BLACK = ansi256.format(r=0, g=0, b=0)
 
-            mode = Mode.Fore.value
-            # Foregrounds
-            WHITE = ansi256.format(mode=mode, r=255, g=255, b=255)
-            BLACK = ansi256.format(mode=mode, r=0, g=0, b=0)
+        RED = ansi256.format(r=255, g=0, b=0)
+        GREEN = ansi256.format(r=0, g=255, b=0)
+        BLUE = ansi256.format(r=0, g=0, b=255)
 
-            RED = ansi256.format(mode=mode, r=255, g=0, b=0)
-            GREEN = ansi256.format(mode=mode, r=0, g=255, b=0)
-            BLUE = ansi256.format(mode=mode, r=0, g=0, b=255)
-
-        class Back:
-            '''Default background Juneberry color'''
-
-            mode = Mode.Back.value
-            # Backgrounds
-            WHITE = ansi256.format(mode=mode, r=255, g=255, b=255)
-            BLACK = ansi256.format(mode=mode, r=0, g=0, b=0)
-
-            RED = ansi256.format(mode=mode, r=255, g=0, b=0)
-            GREEN = ansi256.format(mode=mode, r=0, g=255, b=0)
-            BLUE = ansi256.format(mode=mode, r=0, g=0, b=255)
+        YELLOW = ansi256.format(r=255, g=255, b=0)
 
 
 Colour = Color

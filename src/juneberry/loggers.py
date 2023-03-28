@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # MIT License
-# 
+#
 # Copyright (c) 2023 mmlvgx
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,8 +21,112 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 '''Juneberry loggers'''
+from sys import stdout
+from .themes import default
+
+from .themes import Theme
+from .timestamps import Timestamp
+
+from .colors import BOLD
+from .colors import RESET
+from .colors import ITALIC
 
 
 class Logger:
-    '''Represents a Juneberry logger'''
-    pass
+    '''
+    Represents a Juneberry logger
+
+    Attributes:
+        theme (Theme): Theme for the logger
+    '''
+
+    def __init__(self, *, theme: Theme = None) -> None:
+        self.theme = theme
+
+        if self.theme is None:
+            self.theme = default
+
+    def info(self, message: str) -> None:
+        '''
+        Confirmation that things are working as expected
+
+        Parameters:
+            message (str): A message to info
+        '''
+        timestamp = Timestamp(self.theme.timestamp)
+
+        message = ITALIC + self.theme.message + message + RESET
+        level = BOLD + self.theme.info + 'INFO' + RESET
+
+        now = timestamp.new()
+
+        stdout.write(f'{RESET}[{now} {level}] ({__name__}) {message}\n')
+
+    def warn(self, message: str) -> None:
+        '''
+        An indication that something unexpected happened,
+        or indicative of some problem in the near future.
+        The software is still working as expected.
+
+        Parameters:
+            message (str): A message to info
+        '''
+        timestamp = Timestamp(self.theme.timestamp)
+
+        message = ITALIC + self.theme.message + message + RESET
+        level = BOLD + self.theme.warn + 'WARN' + RESET
+
+        now = timestamp.new()
+
+        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')
+
+    def debug(self, message: str) -> None:
+        '''
+        Detailed information, typically of
+        interest only when diagnosing problems
+
+        Parameters:
+            message (str): A message to info
+        '''
+        timestamp = Timestamp(self.theme.timestamp)
+
+        message = ITALIC + self.theme.message + message + RESET
+        level = BOLD + self.theme.debug + 'DEBUG' + RESET
+
+        now = timestamp.new()
+
+        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')
+
+    def error(self, message: str) -> None:
+        '''
+        Due to a more serious problem,
+        the software has not been able to perform some function.
+
+        Parameters:
+            message (str): A message to info
+        '''
+        timestamp = Timestamp(self.theme.timestamp)
+
+        message = ITALIC + self.theme.message + message + RESET
+        level = BOLD + self.theme.error + 'ERROR' + RESET
+
+        now = timestamp.new()
+
+        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')
+
+    def fatal(self, message: str) -> None:
+        '''
+        A serious error, indicating that the program
+        itself may be unable to continue running.
+
+        Parameters:
+            message (str): A message to info
+        '''
+        timestamp = Timestamp(self.theme.timestamp)
+
+        message = ITALIC + self.theme.message + message + RESET
+        level = BOLD + self.theme.fatal + 'FATAL' + RESET
+
+        now = timestamp.new()
+
+        stdout.write(f'[{now} {level}] ({__name__}) {message}\n')

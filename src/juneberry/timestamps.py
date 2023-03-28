@@ -20,50 +20,32 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-'''Juneberry themes'''
-from .colors import Color
+'''Juneberry timestamps'''
+from time import time
+from time import localtime
+from time import strftime
+
+from .colors import RESET
 
 
-class Theme:
+class Timestamp:
     '''
-    Represents a Juneberry theme
+    Represents a Juneberry timestamp
 
     Attributes:
-        info (str): Color for info level
-        warn (str): Color for warn level
-        debug (str): Color for deubg level
-        error (str): Color for error level
-        fatal (str): Color for fatal level
-        timestamp (str): Color for timestamp
-        message (str): Color for message
+        color (str): Color for timestamp
     '''
 
-    def __init__(
-        self,
-        info=None,
-        warn=None,
-        debug=None,
-        error=None,
-        fatal=None,
-        timestamp=None,
-        message=None,
-    ) -> None:
-        self.info = info
-        self.warn = warn
-        self.debug = debug
-        self.error = error
-        self.fatal = fatal
-        self.timestamp = timestamp
-        self.message = message
+    def __init__(self, color: str) -> None:
+        self.color = color
 
+    def new(self) -> str:
+        '''
+        Get formatted current time
+        '''
+        seconds = time()
+        local = localtime(seconds)
 
-# Default theme
-default = Theme(
-    Color.Default.WHITE,  # INFO
-    Color.Default.BLUE,  # WARN
-    Color.Default.YELLOW,  # DEBUG
-    Color.Default.RED,  # ERROR
-    Color.Default.RED,  # FATAL
-    Color.Default.GREEN,  # Timestamp
-    Color.Default.GREEN,  # Message
-)
+        format = '%d.%m.%Y %H:%M:%S'
+
+        return self.color + strftime(format, local) + RESET
