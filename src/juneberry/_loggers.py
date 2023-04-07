@@ -20,132 +20,113 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-'''Juneberry loggers'''
-from inspect import stack
-from inspect import getmodule
-from inspect import getmodulename
+"""Juneberry loggers"""
 
-from enum import Enum
+from ._effects import Effect
 
-from sys import stdout
-from .themes import default
+from ._themes import default_theme
 
-from .themes import Theme
-from .timestamps import Timestamp
+from ._themes import Theme
+from ._levels import Level
 
-from .colors import BOLD
-from .colors import RESET
-from .colors import ITALIC
-
-
-class Level(Enum):
-    INFO = 'info'
-    WARN = 'warn'
-    DEBUG = 'debug'
-    ERROR = 'error'
-    FATAL = 'fatal'
+from ._levels import INFO
+from ._levels import WARN
+from ._levels import DEBUG
+from ._levels import ERROR
+from ._levels import FATAL
 
 
 class Logger:
-    '''
+    """
     Represents a Juneberry logger
 
     Attributes:
         theme (Theme): Theme for the logger
-    '''
+    """
 
     def __init__(self, *, theme: Theme = None) -> None:
-        self.theme = theme
+        self.__theme = theme
 
-        if self.theme is None:
-            self.theme = default
+        if self.__theme is None:
+            self.__theme = default_theme
 
-    def _log(self, message: str, level: Level, scope: tuple) -> None:
-        timestamp = Timestamp(self.theme.timestamp)
+    def _log(self, level: Level, message: str, scope: tuple) -> None:
+        _level = (
+            self.__theme.__getattribute__(level.name)
+            + Effect.Standart.BOLD
+            + level.name.upper()
+            + Effect.Standart.RESET
+        )
+        _message = (
+            self.__theme.message.effect
+            + self.__theme.message.color
+            + message
+            + Effect.Standart.RESET
+        )
+        _timestamp = (
+            self.__theme.timestamp.effect
+            + self.__theme.timestamp.color
+            + self.__theme.timestamp.get()
+            + Effect.Standart.RESET
+        )
+        scope = self.__theme.module.get()
+        _module = (
+            self.__theme.module.effect
+            + self.__theme.module.color
+            + f"{scope[0]}:<{scope[1]}>"
+            + Effect.Standart.RESET
+        )
 
-        theme = self.theme.__getattribute__(level.value)
+        struct = f"[{_timestamp} {_level}] ({_module}) {_message}"
 
-        level = BOLD + theme + level.name + RESET
-        message = ITALIC + self.theme.message + message + RESET
-
-        now = timestamp.new()
-
-        module = scope[0]
-        name = scope[1]
-
-        stdout.write(f'{RESET}[{now} {level}] ({module.__name__}:<{name}>) {message}\n')
+        print(struct)
 
     def info(self, message: str) -> None:
-        '''
+        """
         Confirmation that things are working as expected
 
         Parameters:
             message (str): A message to info
-        '''
-        frame = stack()[1]
-
-        module = getmodule(frame[0])
-        name = getmodulename(module.__file__)
-
-        self._log(message, Level.INFO, (module, name))
+        """
+        self._log(INFO, message, self.__theme.timestamp.get())
 
     def warn(self, message: str) -> None:
-        '''
+        """
         An indication that something unexpected happened,
         or indicative of some problem in the near future.
         The software is still working as expected.
 
         Parameters:
             message (str): A message to warn
-        '''
-        frame = stack()[1]
-
-        module = getmodule(frame[0])
-        name = getmodulename(module.__file__)
-
-        self._log(message, Level.WARN, (module, name))
+        """
+        self._log(WARN, message, self.__theme.timestamp.get())
 
     def debug(self, message: str) -> None:
-        '''
+        """
         Detailed information, typically of
         interest only when diagnosing problems
 
         Parameters:
             message (str): A message to debug
-        '''
-        frame = stack()[1]
-
-        module = getmodule(frame[0])
-        name = getmodulename(module.__file__)
-
-        self._log(message, Level.DEBUG, (module, name))
+        """
+        self._log(DEBUG, message, self.__theme.timestamp.get())
 
     def error(self, message: str) -> None:
-        '''
+        """
         Due to a more serious problem,
         the software has not been able to perform some function.
 
         Parameters:
             message (str): A message to error
-        '''
-        frame = stack()[1]
-
-        module = getmodule(frame[0])
-        name = getmodulename(module.__file__)
-
-        self._log(message, Level.ERROR, (module, name))
+        """
+        self._log(ERROR, message, self.__theme.timestamp.get())
 
     def fatal(self, message: str) -> None:
-        '''
+        """
         A serious error, indicating that the program
         itself may be unable to continue running.
 
         Parameters:
             message (str): A message to fatal
-        '''
-        frame = stack()[1]
-
-        module = getmodule(frame[0])
-        name = getmodulename(module.__file__)
-
-        self._log(message, Level.FATAL, (module, name))
+        """
+        self._log(FATAL, message, self.__theme.timestamp.get())

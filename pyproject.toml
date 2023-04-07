@@ -1,8 +1,8 @@
 [tool.poetry]
 name = 'juneberry'
-version = '1.0.4'
+version = '1.1'
 description = 'Lightweight Python logging without dependencies'
-authors = ['mmlvgx']
+authors = ['mmlvgx <mmlvgx@gmail.com>']
 license = 'MIT'
 readme = 'README.md'
 packages = [{include = 'juneberry', from = 'src'}]

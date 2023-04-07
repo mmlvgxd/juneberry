@@ -20,11 +20,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Lightweight Python logging without dependencies"""
-from ._loggers import Logger
-from ._colors import Color
-from ._effects import Effect
-from ._messages import Message
-from ._modules import Module
-from ._timestamps import Timestamp
-from ._themes import Theme
+"""Juneberry types"""
+from typing import NewType
+
+
+_Color = NewType("_Color", str)
+_Effect = NewType("_Effect", str)

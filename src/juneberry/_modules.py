@@ -20,50 +20,34 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-'''Juneberry themes'''
-from .colors import Color
+"""Juneberry modules"""
+
+from inspect import stack
+from inspect import getmodule
+from inspect import getmodulename
+
+from ._type import _Color
+from ._type import _Effect
 
 
-class Theme:
-    '''
-    Represents a Juneberry theme
+class Module:
+    """
+    Represents a Juneberry Module
 
     Attributes:
-        info (str): Color for info level
-        warn (str): Color for warn level
-        debug (str): Color for deubg level
-        error (str): Color for error level
-        fatal (str): Color for fatal level
-        timestamp (str): Color for timestamp
-        message (str): Color for message
-    '''
+        color (_Color): Color for module
+        effect (_Effect): Effect for module
+    """
 
-    def __init__(
-        self,
-        info=None,
-        warn=None,
-        debug=None,
-        error=None,
-        fatal=None,
-        timestamp=None,
-        message=None,
-    ) -> None:
-        self.info = info
-        self.warn = warn
-        self.debug = debug
-        self.error = error
-        self.fatal = fatal
-        self.timestamp = timestamp
-        self.message = message
+    def __init__(self, color: _Color, effect: _Effect) -> None:
+        self.color = color
+        self.effect = effect
 
+    def get(self) -> str:
+        """Get module"""
+        frame = stack()[1]
 
-# Default theme
-default = Theme(
-    Color.Default.WHITE,  # INFO
-    Color.Default.BLUE,  # WARN
-    Color.Default.YELLOW,  # DEBUG
-    Color.Default.RED,  # ERROR
-    Color.Default.RED,  # FATAL
-    Color.Default.GREEN,  # Timestamp
-    Color.Default.GREEN,  # Message
-)
+        module = getmodule(frame[0])
+        name = getmodulename(module.__file__)
+
+        return (module.__name__, name)

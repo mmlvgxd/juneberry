@@ -20,32 +20,38 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-'''Juneberry timestamps'''
-from time import time
-from time import localtime
-from time import strftime
+"""Juneberry effects"""
 
-from .colors import RESET
+from ._type import _Effect
+
+# ANSI
+# 0: Escape Code
+sgr = "\033[{0}m"
+
+# ANSI Effects
+_RESET = 0
+_BOLD = 1
+_FAINT = 2
+_ITALIC = 3
+_UNDERLINE = 4
 
 
-class Timestamp:
-    '''
-    Represents a Juneberry timestamp
+class _Standart:
+    """Juneberry Effects: Standart"""
+
+    RESET: _Effect = sgr.format(_RESET)
+    BOLD: _Effect = sgr.format(_BOLD)
+    FAINT: _Effect = sgr.format(_FAINT)
+    ITALIC: _Effect = sgr.format(_ITALIC)
+    UNDERLINE: _Effect = sgr.format(_UNDERLINE)
+
+
+class Effect:
+    """
+    Represents a Juneberry Effect
 
     Attributes:
-        color (str): Color for timestamp
-    '''
+        Standart (class): Juneberry Effect: Standart
+    """
 
-    def __init__(self, color: str) -> None:
-        self.color = color
-
-    def new(self) -> str:
-        '''
-        Get formatted current time
-        '''
-        seconds = time()
-        local = localtime(seconds)
-
-        format = '%d.%m.%Y %H:%M:%S'
-
-        return self.color + strftime(format, local) + RESET
+    Standart = _Standart

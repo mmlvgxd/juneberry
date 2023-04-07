@@ -1,8 +1,8 @@
 # juneberry
 Lightweight Python logging without dependencies
-# install
+# Install
 `pip install juneberry`
-# examples
+# Examples
 `examples/basic.py`
 ```py
 import juneberry
@@ -15,28 +15,29 @@ logger.info('Hello')
 You can also use themes\
 `examples/themes.py`
 ```py
-from juneberry import Theme
-from juneberry import Color
 from juneberry import Logger
+from juneberry import Theme, Color, Effect
+from juneberry import Message, Timestamp, Module
 
 
 theme = Theme(
-    Color.Custom.from_rgb((189, 224, 254)),
-    Color.Custom.from_rgb((205, 180, 219)),
-    Color.Custom.from_rgb((162, 210, 255)),
-    Color.Custom.from_rgb((255, 200, 221)),
-    Color.Custom.from_rgb((255, 175, 204)),
-    Color.Custom.from_rgb((255, 254, 214)),
-    Color.Custom.from_rgb((255, 254, 214))
+    Color.Converters.from_rgb(180, 190, 254),
+    Color.Converters.from_rgb(137, 180, 250),
+    Color.Converters.from_rgb(203, 166, 247),
+    Color.Converters.from_rgb(250, 179, 135),
+    Color.Converters.from_rgb(243, 139, 168),
+    Module(Color.Converters.from_rgb(205, 214, 244), Effect.Standart.BOLD),
+    Message(Color.Converters.from_rgb(205, 214, 244), Effect.Standart.ITALIC),
+    Timestamp(Color.Converters.from_rgb(205, 214, 244), Effect.Standart.ITALIC),
 )
 
 logger = Logger(theme=theme)
 
 
-logger.info('Everything is OK')
-logger.warn('Warning')
-logger.debug('KrutoiSkeletik24')
-logger.error('Something went wrong')
-logger.fatal('Critical error')
+logger.info("Everything is OK")
+logger.warn("Warning")
+logger.debug("KrutoiSkeletik24")
+logger.error("Something went wrong")
+logger.fatal("Critical error")
 ```
 ![](assets/themes.png)
